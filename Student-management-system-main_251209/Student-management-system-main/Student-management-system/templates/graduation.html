@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Management System</title>
+    <link rel="icon" href="../favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css"/>
+     <style>
+        body {
+            background-color: #f0f4f8; /* 修改：替换原灰色为高级浅蓝灰 */
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            color: #2c3e50;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 0; /* 修改：移除底部间距，让导航栏紧贴头部 */
+            background-color: #165DFF; /* 修改：主色调改为高级蓝色 */
+            box-shadow: 0 2px 10px rgba(22, 93, 255, 0.15);
+            color: white;
+        }
+        .header .left {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+        .header .right {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .header .right_right a {
+            color: white;
+            text-decoration: none;
+        }
+        .leftside {
+            background-color: #0F172A; /* 修改：导航栏背景改为高级深色 */
+            border-radius: 0; /* 修改：移除圆角，更简洁 */
+            box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+            padding: 15px 0;
+            width: 180px; /* 修改：缩小导航栏宽度（原250px），扩大右侧区域 */
+            height: calc(100vh - 59px); 
+            position: fixed; /* 修改：固定定位在最左侧 */
+            top: 59px; 
+            left: 0; /* 修改：强制居左 */
+            z-index: 100;
+            overflow-y: auto;
+        }
+        .leftside ul {
+            list-style: none;
+            padding: 0;
+        }
+        .leftside li {
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+        }
+        .leftside li a {
+            text-decoration: none;
+            color: #94A3B8;
+            display: block;
+            font-weight: 500;
+        }
+        .leftside li.first {
+            background-color: #165DFF; /* 修改：选中项用主蓝色 */
+        }
+        .leftside li.first a {
+            color: white;
+        }
+        .leftside li:hover:not(.first) {
+            background-color: #1E293B; /* 修改：hover 高级深色 */
+            transform: translateX(5px); /* 新增：微动效 */
+        }
+        .sub-header {
+            color: #1E293B;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #165DFF; /* 修改：边框用主蓝色 */
+        }
+        .table-responsive {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 25px;
+            width: 100%; /* 修改：占满父容器宽度 */
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+        thead {
+            background-color: #F8FAFC; /* 修改：表头高级浅灰 */
+            border-bottom: 2px solid #E2E8F0;
+        }
+        th {
+            color: #334155;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #F8FAFC; /* 修改：偶数行高级浅灰 */
+        }
+        tr:hover {
+            background-color: #EFF6FF; /* 修改：行hover 浅蓝 */
+        }
+        input, select {
+            padding: 8px 12px;
+            border: 1px solid #CBD5E1;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 200px;
+        }
+        input:focus, select:focus {
+            border-color: #165DFF; /* 修改：聚焦边框主蓝色 */
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(22, 93, 255, 0.2);
+        }
+        input[type="submit"] {
+            background-color: #165DFF; /* 修改：按钮主蓝色 */
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            max-width: none;
+        }
+        input[type="submit"]:hover {
+            background-color: #0F46D1; /* 修改：按钮hover 加深蓝色 */
+            transform: translateY(-2px);
+        }
+        .right_right a {
+            color: #165DFF; /* 修改：链接主蓝色 */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .right_right a:hover {
+            color: #0F46D1; /* 修改：链接hover 加深蓝色 */
+            text-decoration: underline;
+        }
+        .container {
+            display: flex; /* 修改：flex 布局确保横向排列 */
+            width: 100%;
+            min-height: calc(100vh - 59px);
+        }
+        .container-fluid {
+            flex: 1; /* 修改：占满剩余宽度 */
+            margin-left: 180px; /* 修改：与导航栏宽度匹配，扩大展示区 */
+            padding: 30px;
+            background-color: #F8FAFC; /* 修改：内容区高级浅蓝灰 */
+        }
+        span {
+            color: #64748B;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+<!-- header 移出 container，作为独立外层 -->
+<div class="header">
+    <span class="left">Graduate Destination Inquiry</span>
+    <span class="right">Hello, {{user_info}} administrator!</span>
+    <span class="right_right"><a href="/">Logout</a></span>
+</div>
+
+<div class="container">
+    <div class="leftside">
+        <ul>
+            <li><a href="/student">Student Info Entry</a></li>
+            <li><a href="/updata_student">Modify Student Info</a></li>
+            <li><a href="/teacher_class">Teacher's Courses</a></li>
+            <li><a href="/teacher">Course Selection</a></li>
+            <li><a href="/grade">Grade Info Entry</a></li>
+            <li><a href="/grade_infos">Grade Inquiry</a></li>
+            <li class="first"><a href="#">Graduation Dest.</a></li>
+            <li><a href="/adminstator">Admin Settings</a></li>
+        </ul>
+    </div>
+    <div class="container-fluid">
+        <h1 class="sub-header">Graduate Destination Inquiry System</h1>
+        <hr>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Query Method: (Student ID/Name)</th>
+                        <th>Query Content</th>
+                        <th>Operation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <form action="" method="post" onsubmit="return handleSubmit()">
+                            <td>
+                                <select name="selected_one">
+                                    <option value="Student ID" selected>Student ID</option>
+                                    <option value="Name">Name</option>
+                                </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </td>
+                            <td><input class="long" name="query" type="text" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <input class="last" type="submit" value="Query" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>Operation result: {{query_result}}</span>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <td>Student ID</td>
+                        <td>Student Name</td>
+                        <td>Graduation Destination</td>
+                    </tr>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{result[0]}}</td>
+                        <td>{{result[1]}}</td>
+                        <td>{{result[2]}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
